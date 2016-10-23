@@ -102,6 +102,18 @@ angular.module('starter.controllers', [])
 
 .controller('RestaurantCtrl', function($scope, $stateParams, $state, $ionicPopup, restaurantsService, $http, $rootScope) {
   $scope.goToMenu = function() {
+    $http({
+      method: 'GET',
+      url: 'https://guesswiseserver.appspot.com/_ah/api/clover/v1/order?tableId=1'
+    }).success(function(data) {
+      console.log(data);
+      var deserialized = JSON.parse(data.message);
+      console.log(deserialized.elements);
+      $rootScope.orderId = deserialized.id;
+      console.log($rootScope.orderId);
+    }).error(function(error) {
+    console.log(error);
+  })
     var restaurantId = $stateParams.restaurantId - 1;
     $state.go('app.restaurantMenu', {'restaurantId' : restaurantId});
   }
@@ -206,25 +218,29 @@ $state.go('app.confirmation');
     console.log($rootScope.orderId);
     console.log($scope.orderMenu[0]['id']);
 
+    var data=[];
+
     for(var i =0; i<$scope.orderMenu.length; i++) {
       for(var j=0; j<$scope.orderMenu[i]['quantity']; j++) {
         data.push($scope.orderMenu[i]['id']);
-        $http({
-          method: 'POST',
-          url: 'https://apisandbox.dev.clover.com:443/v3/merchants/B6K8GP3H3Z6KC/orders/' + $rootScope.orderId + '/line_items'
-        })
       }
     }
      $http({
        method: 'GET',
-       url: 'https://guesswiseserver.appspot.com/_ah/api/clover/v1/orders/confirm_order?orderId=' + $rootScope.orderId + '&lineItems=' + data
+       url: 'https://guesswiseserver.appspot.com/_ah/api/clover/v1/orders/confirm_order?orderId=' + $rootScope.orderId
      })
   }
 
   $scope.payOrder = function() {
+    var myPopup = $ionicPopup.alert({
+      template: '<center><p>Payment Successful!</p><center>'
+    });
+    $timeout(function() {
+      myPopup.close();
+    }, 3000);
     $http({
-      method: 'POST',
-      url: '',
+      method: 'GET',
+      url: 'https://guesswiseserver.appspot.com/_ah/api/clover/v1/pay?orderId=' + $rootScope.orderId
 
     })
   }
