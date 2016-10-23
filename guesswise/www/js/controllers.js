@@ -74,8 +74,8 @@ angular.module('starter.controllers', [])
     
   }
 
-  $scope.goToPaymentHistory = function() {
-    $state.go('app.paymentHistory');
+  $scope.goToHistory = function() {
+    $state.go('app.History');
   }
 })
 
