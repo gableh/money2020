@@ -70,18 +70,25 @@ angular.module('starter.controllers', [])
     $state.go('app.settings');
   }
   // wait for ondeviceready, or use $ionicPlatform.ready() if you're using Ionic Framework 1
-    $scope.takePicture = function(){
-      // now we can call any of the functionality as documented in Native docs
-       $cordovaCamera.getPicture().then(
-        function(res) {
-          console.log("We have taken a picture!", res);
-          // Run code to save the picture or use it elsewhere
-        },
-        function(err){
-          console.error("Error taking a picture", err);
-        }
-      )
-    }
+  $scope.takePicture = function (options) {
+    var options = {
+            quality : 75,
+            destinationType : Camera.DestinationType.DATA_URL,
+            sourceType : Camera.PictureSourceType.CAMERA,
+            allowEdit : true,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 300,
+            targetHeight: 300,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: false
+        };
+
+        $cordovaCamera.getPicture(options).then(function(imageData) {
+            $scope.imgURI = "data:image/jpeg;base64," + imageData;
+        }, function(err) {
+            // An error occured. Show a message to the user
+        });
+   };
   $scope.goToHistory = function() {
     $state.go('app.History');
   }
@@ -114,5 +121,5 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MyController', function(){
-    
+
 });
