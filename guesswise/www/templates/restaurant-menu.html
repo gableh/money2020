@@ -1,13 +1,31 @@
-<h1>test</h1>
-<ion-view view-title="Menu">
-  <ion-content>
-      <ion-list>
-          <ion-item ng-repeat="dish in restaurantMenu">
-            <ion-checkbox ng-model="dish.selected">{{ dish.name }}<span class="item-note">${{ dish.price / 100 }}</span></ion-checkbox>
-          </ion-item>
-      </ion-list>
-  </ion-content>
-  <div class="bar bar-footer bar-balanced">
-  <div class="title"><span ng-click="order();">Add to Order</span></div>
+<div class="bar bar-header bar-light">
+    <h1 class="title">bar-light</h1>
 </div>
-</ion-view>
+<div class="list" ng-repeat="dish in restaurantMenu">
+    <label class="item item-input item-select">
+        <div class="input-label">{{ dish.name }}</div>
+        <span class="item-note">${{ dish.price/100  }}</span>
+        <select ng-model="dish.quantity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+        </select>
+    </label>
+
+</div>
+
+<div class="bar bar-footer bar-balanced">
+    <div class="title"><span ng-click="order();">Add to Order</span></div>
+</div>
