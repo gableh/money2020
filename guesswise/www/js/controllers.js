@@ -65,15 +65,23 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('HomePageCtrl', function($scope, $state) {
+.controller('HomePageCtrl', function($scope, $state, $cordovaCamera, $ionicPlatform) {
   $scope.goToSettings = function () {
     $state.go('app.settings');
   }
-
-  $scope.scanQRCode = function() {
-    
-  }
-
+  // wait for ondeviceready, or use $ionicPlatform.ready() if you're using Ionic Framework 1
+    $scope.takePicture = function(){
+      // now we can call any of the functionality as documented in Native docs
+       $cordovaCamera.getPicture().then(
+        function(res) {
+          console.log("We have taken a picture!", res);
+          // Run code to save the picture or use it elsewhere
+        },
+        function(err){
+          console.error("Error taking a picture", err);
+        }
+      )
+    }
   $scope.goToHistory = function() {
     $state.go('app.History');
   }
@@ -95,11 +103,16 @@ angular.module('starter.controllers', [])
 
 .controller('RestaurantCtrl', function($scope, $stateParams, $state, $location, restaurantsService) {
   $scope.goToMenu = function() {
-    var restaurantId = $location.url().substring($location.url().lastIndexOf('/'));
-    $state.go('app.restaurantMenu', restaurantId);
+    var restaurantId = $stateParams.restaurantId - 1;
+    $state.go('app.restaurantMenu', {'restaurantId' : restaurantId});
   }
 })
 
 .controller('RestaurantMenuCtrl', function($scope, $stateParams, restaurantsService) {
+  console.log($stateParams);
   $scope.restaurantMenu = restaurantsService.getRestaurantMenu($stateParams.restaurantId);
+})
+
+.controller('MyController', function(){
+    
 });

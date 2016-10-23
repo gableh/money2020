@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ionic.native'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -115,7 +115,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 
   // menu of single restaurant state
   .state('app.restaurantMenu', {
-    url: '/restaurants/:restaurantId/menu',
+    url: '/restaurants/menu',
     views: {
       'menuContent': {
         templateUrl: 'templates/restaurant-menu.html',
@@ -123,7 +123,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     },
     params: {
-      'restaurantId': 0
+      'restaurantId' : 0
     }
   })
   
