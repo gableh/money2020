@@ -1,0 +1,16 @@
+<ion-view title="Order Confirmation">
+  <ion-content>
+  <ion-list ng-repeat="dish in orderMenu">
+  	<ion-item>Item: {{dish.name}}</ion-item>
+  	<ion-item>Quantity: {{dish.quantity}}</ion-item>
+  	<ion-item>Price: {{dish.price/100}}</ion-item>
+  </ion-list>
+  <ion-item>Total: </ion-item>
+      <button nav-clear class="button button-block button-positive" ng-click="placeOrder()">
+        Place Order
+      </button>
+      <button class="button button-block button-positive" ng-click="payMoney()">
+      	Checkout
+      </button>
+  </ion-content>
+</ion-view>

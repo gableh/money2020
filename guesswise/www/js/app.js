@@ -35,9 +35,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ionic.n
 
   // login state
   .state('login', {
-      url: '/login',
-      templateUrl: 'templates/login.html',
-      controller: 'LoginCtrl'
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
   })
 
   // new user state
@@ -60,14 +60,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ionic.n
 
   // app settings state
   .state('app.settings', {
-      url: '/settings',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/settings.html',
-          controller: 'SettingsCtrl'
-        }
+    url: '/settings',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsCtrl'
       }
-    })
+    }
+  })
 
   // history of payments state
   .state('app.History', {
@@ -93,14 +93,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ionic.n
 
   // list of restaurants state
   .state('app.restaurants', {
-      url: '/restaurants',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/restaurants.html',
-          controller: 'RestaurantsCtrl'
-        }
+    url: '/restaurants',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/restaurants.html',
+        controller: 'RestaurantsCtrl'
       }
-    })
+    }
+  })
 
   // single restaurant landing page state
   .state('app.single', {
@@ -137,35 +137,88 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ionic.n
     }
   })
 
+  .state('app.confirmation', {
+    url: '/restaurants/confirm-order',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/confirm-order.html',
+        controller: 'ConfirmOrderCtrl'
+      }
+    }
+  })
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
 })
 
-.service('restaurantsService', function() {
-   var restaurants = [
-   { title: 'Chipotle', id: 1, menu: [
-     'Burrito', 'Tacos', 'Bowls']},
-   { title: 'Sajj', id: 2, menu: [
-     'Falafel', 'Hummus', 'Tahini']}
-  ];
+.service('restaurantsService', function($http) {
+   // entire restaurant menu
+   var restaurantMenu;
+   $http({
+    method: 'GET',
+    url: 'https://guesswiseserver.appspot.com/_ah/api/clover/v1/items'
+  }).success(function(data) {
+    console.log(data);
+    var deserialized = JSON.parse(data.message);
+    console.log(deserialized.elements);
+    restaurantMenu = deserialized.elements;
 
-   var getRestaurants = function(){
-    return restaurants;
-   };
+  }).error(function(error) {
+    console.log(error);
+  })
 
-   var getRestaurant = function(id){
-    return restaurant[id];
-   }
+  var restaurants = [
+  {'title':'Chipotle', 'id': 1, restaurantMenu}]
 
-   var getRestaurantMenu = function(restaurantId) {
+  var getRestaurants = function() {
+    return 'Chipotle';
+  }
+  var getMenuItems = function(){
+    return restaurantMenu;
+  };
+
+  var getItem = function(itemName) {
+    for (var i=0; i<restaurantMenu.length; i++) {
+      if (restaurantMenu[i].name == itemName) {
+        return restaurantMenu[i];
+      }
+    }
+  }
+
+  var setQuantity = function(itemName, quantity) {
+    for (var i=0; i<restaurantMenu.length; i++) {
+      if (restaurantMenu[i].name == itemName) {
+        restaurantMenu.quantity = quantity;
+      }
+    }
+  }
+
+  var getItemId = function(itemName){
+    for (var i=0; i<restaurantMenu.length; i++) {
+      if (restaurantMenu[i].name == 'itemName') {
+        return restaurantMenu[i].id;
+      }
+    }
+  }
+
+  var changeQuantity = function(number, itemName) {
+    for (var i=0; i<restaurantMenu.length; i++) {
+      if (restaurantMenu[i].name == 'itemName') {
+        restaurantMenu[i].quantity += number;
+      }
+    }
+  }
+
+  var getRestaurantMenu = function(restaurantId) {
     return restaurants[restaurantId].menu;
-   };
+  };
 
-   return {
+  return {
     getRestaurants: getRestaurants,
-    getRestaurant: getRestaurant,
-    getRestaurantMenu: getRestaurantMenu
-   };
+    getRestaurantMenu: getRestaurantMenu,
+    getMenuItems: getMenuItems,
+    getItemId: getItemId,
+  };
 })
 
 .service('paymentHistoryService', function() {
