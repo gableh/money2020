@@ -117,13 +117,20 @@ angular.module('starter.controllers', [])
     })
   }
 
-  $scope.openOrder = function() {
+  $scope.openOrder = function($rootScope) {
     $http({
       method: 'GET',
       url: 'https://guesswiseserver.appspot.com/_ah/api/clover/v1/order?tableId=1'
-    })
-  }
-})
+    }).success(function(data) {
+    console.log(data);
+    var deserialized = JSON.parse(data.message);
+    $rootScope.orderId = deserialized.id;
+    console.log($rootScope.id);
+
+  }).error(function(error) {
+    console.log(error);
+  })
+}
 
 .controller('RestaurantMenuCtrl', function($scope, $state, $stateParams, $ionicPopup, $timeout, restaurantsService, $http) {
  $scope.restaurantMenu = restaurantsService.getMenuItems();
@@ -174,7 +181,7 @@ $state.go('app.confirmation');
   }
 })
 
-.controller('ConfirmOrderCtrl', function($scope, $state, $ionicPopup, $timeout, restaurantsService, $http) {
+.controller('ConfirmOrderCtrl', function($scope, $state, $ionicPopup, $timeout, restaurantsService, $http, $rootScope) {
   $scope.restaurantMenu = restaurantsService.getMenuItems();
   $scope.orderMenu = [];
   $scope.totalCost = 0;
@@ -193,17 +200,29 @@ $state.go('app.confirmation');
       myPopup.close();
     }, 3000);
     console.log('------ reaching');
-    $http({
-      method: 'GET',
-      url: 'https://guesswiseserver.appspot.com/_ah/api/clover/v1/orders/confirm_order?tableId=1'
-    })
-  }
+    var data;
+    var response;
+    for(var i =0; i<orderMenu.length; i++) {
+      for(var j=0; j<orderMenu[i]['quantity']; j++) {
+        data = {
+          'item': {'id':orderMenu[i]['id']}
+        }
+        $http({
+          method: 'POST',
+          url: 'https://apisandbox.dev.clover.com:443/v3/merchants/B6K8GP3H3Z6KC/orders/'+$rootScope.orderId+'/line_items',
+        })
+      }
+    }
+  //   $http({
+  //     method: 'GET',
+  //     url: 'https://guesswiseserver.appspot.com/_ah/api/clover/v1/orders/confirm_order?tableId=1'
+  //   })
+  // }
 
-  $scope.payOrder = function() {
-    $http({
-      method: 'POST',
-      url: '',
-
-    })
+  // $scope.payOrder = function() {
+  //   $http({
+  //     method: 'POST',
+  //     url: ''
+  //   });
   }
 });

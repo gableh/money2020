@@ -5,7 +5,7 @@
   	<ion-item>Quantity: {{dish.quantity}}</ion-item>
   	<ion-item>Price: {{dish.price/100}}</ion-item>
   </ion-list>
-  <ion-item>Total: </ion-item>
+  <ion-item>Total: {{ totalCost/100 }}</ion-item>
       <button nav-clear class="button button-block button-positive" ng-click="placeOrder()">
         Place Order
       </button>
