@@ -1,14 +1,32 @@
 <ion-view view-title="Landing Page">
-  <ion-content class="center-buttons">
-    <button class="button button-positive" ng-click="goToMenu()">
-  Menu
-</button>
-<button class="button button-positive" ng-click="createReview()">
-  Review
-</button>
-<button class="button button-positive" ng-click="callWaiter()">
-  Call Waiter
-</button>
+	
+	<ion-content><div class="list card" style="text-align: center;">
+
+		<div class="item item-avatar">
+			<img src="avatar.jpg">
+			<h2>{{ restaurant.title }}</h2>
+			<p>Nine Inch Nails</p>
+		</div>
+
+		<div class="item item-image" style="min-height: 300px;">
+			<img src="cover.jpg">
+		</div>
+
+		<a class="item assertive" id="menu-link" ng-click="goToMenu()">
+			<i class="icon "></i>
+			Menu
+		</a>
+
+	</div>
+	<div id="homepage-buttons">
+		<button class="button button-block button-positive" ng-click="goToReview()">
+			Review
+		</button>
+		<button class="button button-block button-positive" ng-click="callWaiter()">
+			Call Waiter
+		</button>
+	</div>
+</ion-content>
 </ion-view>
 
 

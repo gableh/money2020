@@ -6,17 +6,19 @@
 				<input type="text" placeholder="Search">
 			</label>
 		</div>
-		<button class="button button-block button-positive" ng-click="takePicture()">
-			Scan QR Code
-		</button>
-
-		<button class="button button-block icon ion-gear-a button-positive" ng-click="goToSettings()">
-			Settings
-		</button>
-		<button class="button button-block button-positive special" ng-click="goToHistory()">
-			Payment History
-		</button>
-
+		<div id="homepage-buttons">
+			<button class="button button-block button-positive" id="scan-qr-code-button" ng-click="takePicture()">
+				Scan QR Code
+			</button>
+			<br>
+			<button class="button button-block icon ion-gear-a button-positive" ng-click="goToSettings()">
+				Settings
+			</button>
+			<br>
+			<button class="button button-block button-positive special" ng-click="goToHistory()">
+				Payment History
+			</button>
+		</div>
 	</ion-view>
 
 

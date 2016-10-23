@@ -108,10 +108,21 @@ angular.module('starter.controllers', [])
   $scope.restaurants = restaurantsService.getRestaurants();
 })
 
-.controller('RestaurantCtrl', function($scope, $stateParams, $state, $location, restaurantsService) {
+.controller('RestaurantCtrl', function($scope, $stateParams, $state, $ionicPopup, restaurantsService) {
   $scope.goToMenu = function() {
     var restaurantId = $stateParams.restaurantId - 1;
     $state.go('app.restaurantMenu', {'restaurantId' : restaurantId});
+  }
+
+  $scope.goToReview = function() {
+    $state.go('app.review');
+  }
+
+  $scope.callWaiter = function() {
+    $ionicPopup.alert({
+      title: 'Confirmed',
+      template: 'A waiter will be with you in a short while!'
+    })
   }
 })
 
@@ -120,6 +131,12 @@ angular.module('starter.controllers', [])
   $scope.restaurantMenu = restaurantsService.getRestaurantMenu($stateParams.restaurantId);
 })
 
-.controller('MyController', function(){
-
+.controller('ReviewCtrl', function($scope, $state, $ionicPopup){
+  $scope.submitReview = function(){
+    $ionicPopup.alert({
+      title: 'Confirmed',
+      template: 'Thank you for submitting your review!'
+    });
+    $state.go('app.single')
+  }
 });

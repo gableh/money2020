@@ -126,9 +126,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ionic.n
       'restaurantId' : 0
     }
   })
+
+  .state('app.review', {
+    url: '/restaurants/, review',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/review.html',
+        controller: 'ReviewCtrl'
+      }
+    }
+  })
   
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/new-user');
+  $urlRouterProvider.otherwise('/app/home');
 })
 
 .service('restaurantsService', function() {
@@ -143,12 +153,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ionic.n
     return restaurants;
    };
 
+   var getRestaurant = function(id){
+    return restaurant[id];
+   }
+
    var getRestaurantMenu = function(restaurantId) {
     return restaurants[restaurantId].menu;
    };
 
    return {
     getRestaurants: getRestaurants,
+    getRestaurant: getRestaurant,
     getRestaurantMenu: getRestaurantMenu
    };
 })
