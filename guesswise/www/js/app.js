@@ -25,49 +25,142 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
+  // side menu 
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
 
-  .state('app.search', {
-    url: '/search',
+  // login state
+  .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl'
+  })
+
+  // new user state
+  .state('new-user', {
+    url: '/new-user',
+    templateUrl: 'templates/new-user.html',
+    controller: 'NewUserCtrl'
+  })
+
+  // app home page state
+  .state('app.home', {
+    url: '/home',
     views: {
       'menuContent': {
-        templateUrl: 'templates/search.html'
+        templateUrl: 'templates/home.html',
+        controller: 'HomePageCtrl'
       }
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
+  // app settings state
+  .state('app.settings', {
+      url: '/settings',
       views: {
         'menuContent': {
-          templateUrl: 'templates/browse.html'
-        }
-      }
-    })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/settings.html',
+          controller: 'SettingsCtrl'
         }
       }
     })
 
-  .state('app.single', {
-    url: '/playlists/:playlistId',
+  // history of payments state
+  .state('app.History', {
+    url: '/history',
     views: {
       'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+        templateUrl: 'templates/history.html',
+        controller: 'HistoryCtrl'
       }
     }
-  });
+  })
+
+  // payment process state
+  .state('app.PaymentProcess', {
+    url: '/payments',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/payments.html',
+        controller: 'PaymentsCtrl'
+      }
+    }
+  })
+
+  // list of restaurants state
+  .state('app.restaurants', {
+      url: '/restaurants',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/restaurants.html',
+          controller: 'RestaurantsCtrl'
+        }
+      }
+    })
+
+  // single restaurant landing page state
+  .state('app.single', {
+    url: '/restaurants/:restaurantId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/restaurant-landing-page.html',
+        controller: 'RestaurantCtrl'
+      }
+    }
+  })
+
+  // menu of single restaurant state
+  .state('app.restaurantMenu', {
+    url: '/restaurants/:restaurantId/menu',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/restaurant-menu.html',
+        controller: 'RestaurantMenuCtrl'
+      }
+    },
+    params: {
+      'restaurantId': 0
+    }
+  })
+  
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/new-user');
+})
+
+.service('restaurantsService', function() {
+   var restaurants = [
+   { title: 'Chipotle', id: 1, menu: [
+     'Burrito', 'Tacos', 'Bowls']},
+   { title: 'Sajj', id: 2, menu: [
+     'Falafel', 'Hummus', 'Tahini']}
+  ];
+
+   var getRestaurants = function(){
+    return restaurants;
+   };
+
+   var getRestaurantMenu = function(restaurantId) {
+    return restaurants[restaurantId].menu;
+   };
+
+   return {
+    getRestaurants: getRestaurants,
+    getRestaurantMenu: getRestaurantMenu
+   };
+})
+
+.service('paymentHistoryService', function() {
+  var payments = ['$10', '$11', '$12'];
+
+  var getPaymentHistory = function() {
+    return payments;
+  }
+
+  return {
+    getPaymentHistory: getPaymentHistory
+  };
 });
