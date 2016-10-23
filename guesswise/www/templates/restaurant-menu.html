@@ -1,10 +1,13 @@
+<h1>test</h1>
 <ion-view view-title="Menu">
   <ion-content>
-    <ion-list>
-    	<ion-item ng-repeat="dish in restaurantMenu">{{dish}}</ion-item>
-    </ion-list>
+      <ion-list>
+          <ion-item ng-repeat="dish in restaurantMenu">
+            <ion-checkbox ng-model="dish.selected">{{ dish.name }}<span class="item-note">${{ dish.price / 100 }}</span></ion-checkbox>
+          </ion-item>
+      </ion-list>
   </ion-content>
   <div class="bar bar-footer bar-balanced">
-  <div class="title">Footer</div>
+  <div class="title"><span ng-click="order();">Add to Order</span></div>
 </div>
 </ion-view>

@@ -25,7 +25,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ionic.n
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-  // side menu 
+  // side menu
   .state('app', {
     url: '/app',
     abstract: true,
@@ -136,7 +136,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova', 'ionic.n
       }
     }
   })
-  
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
 })

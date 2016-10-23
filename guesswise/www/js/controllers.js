@@ -65,29 +65,21 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('HomePageCtrl', function($scope, $state, $cordovaCamera, $ionicPlatform) {
+.controller('HomePageCtrl', function($scope, $state, $cordovaCamera, $ionicPlatform, $cordovaBarcodeScanner) {
   $scope.goToSettings = function () {
     $state.go('app.settings');
   }
   // wait for ondeviceready, or use $ionicPlatform.ready() if you're using Ionic Framework 1
   $scope.takePicture = function (options) {
-    var options = {
-            quality : 75,
-            destinationType : Camera.DestinationType.DATA_URL,
-            sourceType : Camera.PictureSourceType.CAMERA,
-            allowEdit : true,
-            encodingType: Camera.EncodingType.JPEG,
-            targetWidth: 300,
-            targetHeight: 300,
-            popoverOptions: CameraPopoverOptions,
-            saveToPhotoAlbum: false
-        };
-
-        $cordovaCamera.getPicture(options).then(function(imageData) {
-            $scope.imgURI = "data:image/jpeg;base64," + imageData;
-        }, function(err) {
-            // An error occured. Show a message to the user
-        });
+    $cordovaBarcodeScanner
+      .scan()
+      .then(function(result) {
+        var id = result.text;
+        alert('success!');
+        $state.go('app.single', {restaurantId: result.text});
+      }, function(error) {
+        // An error occurred
+      });
    };
   $scope.goToHistory = function() {
     $state.go('app.History');
@@ -126,9 +118,22 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('RestaurantMenuCtrl', function($scope, $stateParams, restaurantsService) {
-  console.log($stateParams);
-  $scope.restaurantMenu = restaurantsService.getRestaurantMenu($stateParams.restaurantId);
+.controller('RestaurantMenuCtrl', function($scope, $stateParams, restaurantsService, $http) {
+  $http({
+    method: 'GET',
+    url: 'https://guesswiseserver.appspot.com/_ah/api/clover/v1/items'
+  }).success(function(data) {
+    console.log(data);
+    var deserialized = JSON.parse(data.message);
+    console.log(deserialized.elements);
+    $scope.restaurantMenu = deserialized.elements;
+
+  }).error(function(error) {
+    console.log(error);
+  })
+  $scope.order = function() {
+    alert("ordering!");
+  }
 })
 
 .controller('ReviewCtrl', function($scope, $state, $ionicPopup){
